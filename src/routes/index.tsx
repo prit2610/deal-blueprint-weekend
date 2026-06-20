@@ -98,7 +98,7 @@ function Section({
 }) {
   return (
     <section id={id} className={`border-t border-border px-6 py-20 sm:py-28 ${className}`}>
-      <div className="mx-auto w-full max-w-6xl">{children}</div>
+      <Reveal className="mx-auto w-full max-w-6xl">{children}</Reveal>
     </section>
   );
 }
