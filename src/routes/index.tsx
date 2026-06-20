@@ -178,25 +178,36 @@ function Section({
 }
 
 function Index() {
+  const scrollY = useScrollY();
+  const active = useActiveSection(NAV.map((n) => n.href.replace("#", "")));
+  useSpotlight();
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ScrollProgress />
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#hero" className="font-display text-lg tracking-tight">
+          <a href="#hero" className="font-display text-lg tracking-tight transition-opacity hover:opacity-70">
             <span className="whitespace-pre-wrap">Encoding Careers&nbsp;{"\n\n"}</span>
           </a>
           <ul className="hidden items-center gap-7 md:flex">
-            {NAV.map((n) => (
-              <li key={n.href}>
-                <a
-                  href={n.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {n.label}
-                </a>
-              </li>
-            ))}
+            {NAV.map((n) => {
+              const isActive = active === n.href.replace("#", "");
+              return (
+                <li key={n.href}>
+                  <a
+                    href={n.href}
+                    className={`relative text-sm transition-colors hover:text-foreground after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
+                      isActive
+                        ? "text-foreground after:w-full"
+                        : "text-muted-foreground after:w-0"
+                    }`}
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
           <a
             href="#register"
@@ -206,6 +217,7 @@ function Index() {
           </a>
         </nav>
       </header>
+
 
       {/* Section 1 — Hero */}
       <section id="hero" className="relative flex min-h-screen items-center px-6 pt-20">
