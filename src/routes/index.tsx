@@ -439,12 +439,14 @@ function Index() {
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
-            <div key={p.name} className="rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-              <img
-                src={p.img}
-                alt={p.name}
-                className="aspect-square w-full rounded-sm object-cover"
-              />
+            <div key={p.name} className="group overflow-hidden rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+              <div className="overflow-hidden rounded-sm">
+                <img
+                  src={p.img}
+                  alt={p.name}
+                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
               <p className="mt-4 font-display text-xl">{p.name}</p>
               <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
             </div>
