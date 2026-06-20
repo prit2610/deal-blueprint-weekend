@@ -156,3 +156,27 @@
   font-family: var(--font-display);
 }
 
+
+/* Mouse-follow spotlight glow on cards */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--color-primary) 16%, transparent),
+    transparent 65%
+  );
+}
+.spotlight-card:hover::before {
+  opacity: 1;
+}

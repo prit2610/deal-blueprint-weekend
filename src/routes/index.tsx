@@ -49,6 +49,80 @@ function Reveal({
   );
 }
 
+// Thin progress bar tracking page scroll
+function ScrollProgress() {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+      setProgress(Math.min(1, Math.max(0, scrolled)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div className="fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent">
+      <div
+        className="h-full bg-primary transition-[width] duration-150 ease-out"
+        style={{ width: `${progress * 100}%` }}
+      />
+    </div>
+  );
+}
+
+// Track scroll position for parallax
+function useScrollY() {
+  const [y, setY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return y;
+}
+
+// Track which section is currently in view for nav highlighting
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState(ids[0] ?? "");
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, [ids.join(",")]);
+  return active;
+}
+
+// Mouse-follow spotlight glow on any element with the `spotlight-card` class
+function useSpotlight() {
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest<HTMLElement>(".spotlight-card");
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      target.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      target.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+}
+
+
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -104,25 +178,36 @@ function Section({
 }
 
 function Index() {
+  const scrollY = useScrollY();
+  const active = useActiveSection(NAV.map((n) => n.href.replace("#", "")));
+  useSpotlight();
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ScrollProgress />
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#hero" className="font-display text-lg tracking-tight">
+          <a href="#hero" className="font-display text-lg tracking-tight transition-opacity hover:opacity-70">
             <span className="whitespace-pre-wrap">Encoding Careers&nbsp;{"\n\n"}</span>
           </a>
           <ul className="hidden items-center gap-7 md:flex">
-            {NAV.map((n) => (
-              <li key={n.href}>
-                <a
-                  href={n.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {n.label}
-                </a>
-              </li>
-            ))}
+            {NAV.map((n) => {
+              const isActive = active === n.href.replace("#", "");
+              return (
+                <li key={n.href}>
+                  <a
+                    href={n.href}
+                    className={`relative text-sm transition-colors hover:text-foreground after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
+                      isActive
+                        ? "text-foreground after:w-full"
+                        : "text-muted-foreground after:w-0"
+                    }`}
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
           <a
             href="#register"
@@ -133,17 +218,23 @@ function Index() {
         </nav>
       </header>
 
+
       {/* Section 1 — Hero */}
-      <section id="hero" className="relative flex min-h-screen items-center px-6 pt-20">
+      <section id="hero" className="relative flex min-h-screen items-center overflow-hidden px-6 pt-20">
         <img
           src={skylineHero}
           alt="Financial district skyline at dusk"
           width={1920}
           height={1080}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-[120%] w-full object-cover will-change-transform"
+          style={{ transform: `translateY(${scrollY * 0.3}px) scale(1.05)` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background" />
-        <div className="relative mx-auto w-full max-w-6xl py-24">
+        <div
+          className="relative mx-auto w-full max-w-6xl py-24"
+          style={{ transform: `translateY(${scrollY * -0.08}px)`, opacity: Math.max(0, 1 - scrollY / 600) }}
+        >
+
           <Eyebrow>A 2-Day Investment Banking Immersion Weekend</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
             From Claude to Closed Deals.
@@ -211,7 +302,7 @@ function Index() {
               The result? A lot of effort. Very little clarity.
             </p>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+          <div className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <p className="text-sm text-muted-foreground">
               This event is designed to bridge the gap between:
             </p>
@@ -250,7 +341,7 @@ function Index() {
               </li>
             ))}
           </ul>
-          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+          <div className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session Led By</Eyebrow>
             <p className="mt-4 font-display text-2xl">Karan Damania</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -300,7 +391,7 @@ function Index() {
               note: "Including a walkthrough of a real transaction.",
             },
           ].map((s) => (
-            <div key={s.title} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <div key={s.title} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="font-display text-xl">{s.title}</p>
               <p className="mt-3 text-sm font-medium">{s.name}</p>
               <p className="text-sm text-muted-foreground">{s.role}</p>
@@ -341,7 +432,7 @@ function Index() {
             ].map((t) => (
               <li
                 key={t}
-                className="rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
+                className="spotlight-card rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
               >
                 {t}
               </li>
@@ -353,7 +444,7 @@ function Index() {
       {/* Section 6 + 7 — Networking & Dinner */}
       <Section>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+          <div className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session 3 — Career Strategy</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">
               Networking & Your Path Into Investment Banking
@@ -370,7 +461,7 @@ function Index() {
               ))}
             </ul>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+          <div className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Bonus — Networking Dinner</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">Continue The Conversation</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -439,7 +530,7 @@ function Index() {
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
-            <div key={p.name} className="group overflow-hidden rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <div key={p.name} className="group overflow-hidden spotlight-card rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <div className="overflow-hidden rounded-sm">
                 <img
                   src={p.img}
@@ -510,7 +601,7 @@ function Index() {
             { tier: "Early Bird Pricing", price: "[Price]", note: "Limited availability" },
             { tier: "Regular Pricing", price: "[Price]", note: "Standard registration" },
           ].map((p) => (
-            <div key={p.tier} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <div key={p.tier} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="text-sm text-muted-foreground">{p.tier}</p>
               <p className="mt-3 font-display text-4xl">{p.price}</p>
               <p className="mt-2 text-sm text-muted-foreground">{p.note}</p>
