@@ -220,16 +220,21 @@ function Index() {
 
 
       {/* Section 1 — Hero */}
-      <section id="hero" className="relative flex min-h-screen items-center px-6 pt-20">
+      <section id="hero" className="relative flex min-h-screen items-center overflow-hidden px-6 pt-20">
         <img
           src={skylineHero}
           alt="Financial district skyline at dusk"
           width={1920}
           height={1080}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-[120%] w-full object-cover will-change-transform"
+          style={{ transform: `translateY(${scrollY * 0.3}px) scale(1.05)` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background" />
-        <div className="relative mx-auto w-full max-w-6xl py-24">
+        <div
+          className="relative mx-auto w-full max-w-6xl py-24"
+          style={{ transform: `translateY(${scrollY * -0.08}px)`, opacity: Math.max(0, 1 - scrollY / 600) }}
+        >
+
           <Eyebrow>A 2-Day Investment Banking Immersion Weekend</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
             From Claude to Closed Deals.
