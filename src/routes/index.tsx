@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import skylineHero from "@/assets/skyline-hero.jpg";
+import karanImg from "@/assets/karan.png";
+import deveshImg from "@/assets/devesh.png";
+import deepamImg from "@/assets/deepam.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -387,17 +390,16 @@ function Index() {
         </h2>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {[
-            { name: "Karan Damania", role: "Managing Partner, Encoding Careers" },
-            { name: "Deepam Gala", role: "Associate – Inga Ventures" },
-            { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB" },
+            { name: "Karan Damania", role: "Managing Partner, Encoding Careers", img: karanImg },
+            { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
+            { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
             <div key={p.name} className="rounded-sm border border-border bg-card p-6">
-              {/* Add a guest photo here. Drop the image in src/assets and use, e.g.:
-                  import karan from "@/assets/karan.jpg";
-                  <img src={karan} alt="Karan Damania" className="aspect-square w-full rounded-sm object-cover" /> */}
-              <div className="flex aspect-square w-full items-center justify-center rounded-sm border border-dashed border-border bg-secondary text-xs text-muted-foreground">
-                Photo
-              </div>
+              <img
+                src={p.img}
+                alt={p.name}
+                className="aspect-square w-full rounded-sm object-cover"
+              />
               <p className="mt-4 font-display text-xl">{p.name}</p>
               <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
             </div>
