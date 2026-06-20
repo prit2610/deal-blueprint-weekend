@@ -493,7 +493,7 @@ function Index() {
 
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
-          <span className="font-display text-foreground">EC Capital Partners</span>
+          <span className="font-display text-foreground whitespace-pre-wrap">Encoding Careers&nbsp;{"\n\n"}</span>
           <span>© 2026 · Investment Banking Immersion Weekend · Mumbai</span>
         </div>
       </footer>
