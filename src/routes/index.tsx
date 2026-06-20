@@ -211,7 +211,7 @@ function Index() {
               The result? A lot of effort. Very little clarity.
             </p>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <p className="text-sm text-muted-foreground">
               This event is designed to bridge the gap between:
             </p>
@@ -250,7 +250,7 @@ function Index() {
               </li>
             ))}
           </ul>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session Led By</Eyebrow>
             <p className="mt-4 font-display text-2xl">Karan Damania</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -300,7 +300,7 @@ function Index() {
               note: "Including a walkthrough of a real transaction.",
             },
           ].map((s) => (
-            <div key={s.title} className="rounded-sm border border-border bg-card p-8">
+            <div key={s.title} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="font-display text-xl">{s.title}</p>
               <p className="mt-3 text-sm font-medium">{s.name}</p>
               <p className="text-sm text-muted-foreground">{s.role}</p>
@@ -341,7 +341,7 @@ function Index() {
             ].map((t) => (
               <li
                 key={t}
-                className="rounded-sm border border-border bg-card px-5 py-4 text-sm"
+                className="rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
               >
                 {t}
               </li>
@@ -353,7 +353,7 @@ function Index() {
       {/* Section 6 + 7 — Networking & Dinner */}
       <Section>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session 3 — Career Strategy</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">
               Networking & Your Path Into Investment Banking
@@ -370,7 +370,7 @@ function Index() {
               ))}
             </ul>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Bonus — Networking Dinner</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">Continue The Conversation</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -439,7 +439,7 @@ function Index() {
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
-            <div key={p.name} className="rounded-sm border border-border bg-card p-6">
+            <div key={p.name} className="rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <img
                 src={p.img}
                 alt={p.name}
@@ -508,7 +508,7 @@ function Index() {
             { tier: "Early Bird Pricing", price: "[Price]", note: "Limited availability" },
             { tier: "Regular Pricing", price: "[Price]", note: "Standard registration" },
           ].map((p) => (
-            <div key={p.tier} className="rounded-sm border border-border bg-card p-8">
+            <div key={p.tier} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="text-sm text-muted-foreground">{p.tier}</p>
               <p className="mt-3 font-display text-4xl">{p.price}</p>
               <p className="mt-2 text-sm text-muted-foreground">{p.note}</p>
