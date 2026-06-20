@@ -62,7 +62,7 @@ function Index() {
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#hero" className="font-display text-lg tracking-tight">
-            EC Capital Partners
+            Encoding Careers.&nbsp;
           </a>
           <ul className="hidden items-center gap-7 md:flex">
             {NAV.map((n) => (
@@ -206,7 +206,7 @@ function Index() {
             <Eyebrow>Session Led By</Eyebrow>
             <p className="mt-4 font-display text-2xl">Karan Damania</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Managing Partner, EC Capital Partners · Co-Founder, Encoding Careers
+              Managing Partner, Encoding Careers · Co-Founder, Encoding Careers
             </p>
             <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
               The framework taught in this session has already been adopted by finance professionals
@@ -387,7 +387,7 @@ function Index() {
         </h2>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {[
-            { name: "Karan Damania", role: "Managing Partner, EC Capital Partners" },
+            { name: "Karan Damania", role: "Managing Partner, Encoding Careers" },
             { name: "Deepam Gala", role: "Associate – Inga Ventures" },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB" },
           ].map((p) => (
