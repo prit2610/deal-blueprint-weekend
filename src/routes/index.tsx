@@ -1,8 +1,53 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import skylineHero from "@/assets/skyline-hero.jpg";
 import karanImg from "@/assets/karan.png";
 import deveshImg from "@/assets/devesh.png";
 import deepamImg from "@/assets/deepam.png";
+
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, visible };
+}
+
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-700 ease-out ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,7 +98,7 @@ function Section({
 }) {
   return (
     <section id={id} className={`border-t border-border px-6 py-20 sm:py-28 ${className}`}>
-      <div className="mx-auto w-full max-w-6xl">{children}</div>
+      <Reveal className="mx-auto w-full max-w-6xl">{children}</Reveal>
     </section>
   );
 }
@@ -81,7 +126,7 @@ function Index() {
           </ul>
           <a
             href="#register"
-            className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Seat
           </a>
@@ -126,7 +171,7 @@ function Index() {
           <div className="mt-10 flex flex-wrap gap-3">
             <a
               href="#register"
-              className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
             >
               Reserve Your Seat
             </a>
@@ -166,7 +211,7 @@ function Index() {
               The result? A lot of effort. Very little clarity.
             </p>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <p className="text-sm text-muted-foreground">
               This event is designed to bridge the gap between:
             </p>
@@ -205,7 +250,7 @@ function Index() {
               </li>
             ))}
           </ul>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session Led By</Eyebrow>
             <p className="mt-4 font-display text-2xl">Karan Damania</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -255,7 +300,7 @@ function Index() {
               note: "Including a walkthrough of a real transaction.",
             },
           ].map((s) => (
-            <div key={s.title} className="rounded-sm border border-border bg-card p-8">
+            <div key={s.title} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="font-display text-xl">{s.title}</p>
               <p className="mt-3 text-sm font-medium">{s.name}</p>
               <p className="text-sm text-muted-foreground">{s.role}</p>
@@ -296,7 +341,7 @@ function Index() {
             ].map((t) => (
               <li
                 key={t}
-                className="rounded-sm border border-border bg-card px-5 py-4 text-sm"
+                className="rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
               >
                 {t}
               </li>
@@ -308,7 +353,7 @@ function Index() {
       {/* Section 6 + 7 — Networking & Dinner */}
       <Section>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Session 3 — Career Strategy</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">
               Networking & Your Path Into Investment Banking
@@ -325,7 +370,7 @@ function Index() {
               ))}
             </ul>
           </div>
-          <div className="rounded-sm border border-border bg-card p-8">
+          <div className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             <Eyebrow>Bonus — Networking Dinner</Eyebrow>
             <h3 className="mt-4 font-display text-2xl">Continue The Conversation</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -394,12 +439,14 @@ function Index() {
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
-            <div key={p.name} className="rounded-sm border border-border bg-card p-6">
-              <img
-                src={p.img}
-                alt={p.name}
-                className="aspect-square w-full rounded-sm object-cover"
-              />
+            <div key={p.name} className="group overflow-hidden rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+              <div className="overflow-hidden rounded-sm">
+                <img
+                  src={p.img}
+                  alt={p.name}
+                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
               <p className="mt-4 font-display text-xl">{p.name}</p>
               <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
             </div>
@@ -463,7 +510,7 @@ function Index() {
             { tier: "Early Bird Pricing", price: "[Price]", note: "Limited availability" },
             { tier: "Regular Pricing", price: "[Price]", note: "Standard registration" },
           ].map((p) => (
-            <div key={p.tier} className="rounded-sm border border-border bg-card p-8">
+            <div key={p.tier} className="rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
               <p className="text-sm text-muted-foreground">{p.tier}</p>
               <p className="mt-3 font-display text-4xl">{p.price}</p>
               <p className="mt-2 text-sm text-muted-foreground">{p.note}</p>
@@ -484,7 +531,7 @@ function Index() {
         <div className="mt-10 flex justify-center">
           <a
             href="mailto:hello@eccapitalpartners.com?subject=Reserve%20Seat%20-%20IB%20Immersion%20Weekend"
-            className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
           </a>
