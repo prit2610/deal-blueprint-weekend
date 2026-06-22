@@ -185,6 +185,109 @@ function DayBadge({ day, label }: { day: string; label: string }) {
   );
 }
 
+// Registration form modal with disclaimer
+function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", pursuing: "" });
+  if (!open) return null;
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          ✕
+        </button>
+
+        {submitted ? (
+          <div className="py-6 text-center">
+            <p className="font-display text-2xl gold-text">You're on the list!</p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Thank you, {form.name || "there"}. We'll reach out to you shortly with the next steps.
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-6 rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            <p className="font-display text-2xl gold-text">Reserve Your Seat</p>
+            <div className="mt-4 rounded-lg border border-[rgba(214,178,99,0.3)] bg-[rgba(214,178,99,0.08)] p-4 text-xs leading-relaxed text-[#e8d9ad]/90">
+              <strong className="text-[#d4af37]">Disclaimer:</strong> This event is hosted in
+              Andheri, Mumbai. The price for the 2-day immersion is{" "}
+              <strong className="text-[#d4af37]">₹2999/-</strong>.
+            </div>
+            <form
+              className="mt-6 space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSubmitted(true);
+              }}
+            >
+              <div>
+                <label className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Name
+                </label>
+                <input
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  placeholder="Your full name"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Email
+                </label>
+                <input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  placeholder="you@email.com"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-widest text-muted-foreground">
+                  What are you currently pursuing?
+                </label>
+                <textarea
+                  required
+                  value={form.pursuing}
+                  onChange={(e) => setForm((f) => ({ ...f, pursuing: e.target.value }))}
+                  rows={3}
+                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  placeholder="e.g. CFA Level 1, MBA Finance, working as an analyst…"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5"
+              >
+                Submit Registration
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
 
 
 
@@ -192,7 +295,7 @@ function DayBadge({ day, label }: { day: string; label: string }) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "From Claude to Closed Deals — 2-Day Investment Banking Immersion" },
+      { title: "From AI to Closed Deals — 2-Day Investment Banking Immersion" },
       {
         name: "description",
         content:
@@ -247,8 +350,10 @@ function Index() {
   const scrollY = useScrollY();
   const active = useActiveSection(NAV.map((n) => n.href.replace("#", "")));
   useSpotlight();
+  const [formOpen, setFormOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <RegistrationModal open={formOpen} onClose={() => setFormOpen(false)} />
       <ScrollProgress />
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -303,7 +408,7 @@ function Index() {
 
           <Eyebrow>A 2-Day Investment Banking Immersion Weekend</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            From Claude to Closed Deals.
+            From AI to Closed Deals.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Learn the Financial Modelling framework being used on live Investment Banking deals,
@@ -433,6 +538,7 @@ function Index() {
               title: "How M&A Transactions Actually Work",
               name: "Deepam Gala",
               role: "Associate – Inga Ventures",
+              img: deepamImg,
               topics: [
                 "Deal Origination",
                 "Pitching Process",
@@ -447,6 +553,7 @@ function Index() {
               title: "How Private Equity Deals Work",
               name: "Devesh Bhardwaj",
               role: "Senior Analyst – Anand Rathi Investment Banking",
+              img: deveshImg,
               topics: [
                 "PE Investment Process",
                 "Deal Sourcing",
@@ -458,9 +565,18 @@ function Index() {
             },
           ].map((s) => (
             <div key={s.title} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-              <p className="font-display text-xl">{s.title}</p>
-              <p className="mt-3 text-sm font-medium">{s.name}</p>
-              <p className="text-sm text-muted-foreground">{s.role}</p>
+              <div className="mb-6 flex items-center gap-4">
+                <img
+                  src={s.img}
+                  alt={s.name}
+                  className="h-16 w-16 shrink-0 rounded-full border-2 border-primary/40 object-cover"
+                />
+                <div>
+                  <p className="font-display text-xl">{s.title}</p>
+                  <p className="mt-1 text-sm font-medium">{s.name}</p>
+                  <p className="text-sm text-muted-foreground">{s.role}</p>
+                </div>
+              </div>
               <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2">
                 {s.topics.map((t) => (
                   <li key={t} className="text-sm text-muted-foreground">
@@ -540,20 +656,27 @@ function Index() {
         <div className="grid gap-12 md:grid-cols-2">
           <div>
             <Eyebrow>Who Should Attend</Eyebrow>
-            <ul className="mt-6 space-y-3">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               {[
-                "Finance Students",
-                "CFA Candidates",
-                "CA Students",
-                "MBA Students",
-                "Aspiring Investment Bankers",
-                "Early Career Finance Professionals",
+                { label: "Finance Students", icon: "🎓" },
+                { label: "CFA Candidates", icon: "📊" },
+                { label: "CA Students", icon: "🧮" },
+                { label: "MBA Students", icon: "🏛️" },
+                { label: "Aspiring Investment Bankers", icon: "💼" },
+                { label: "Early Career Finance Professionals", icon: "📈" },
               ].map((t) => (
-                <li key={t} className="border-b border-border pb-3 text-sm">
-                  {t}
-                </li>
+                <div
+                  key={t.label}
+                  className="spotlight-card flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-2xl">
+                    {t.icon}
+                  </span>
+                  <span className="text-sm font-medium leading-snug">{t.label}</span>
+                </div>
               ))}
-            </ul>
+            </div>
+
           </div>
           <div>
             <Eyebrow>What You'll Walk Away With</Eyebrow>
@@ -679,14 +802,13 @@ function Index() {
                 </div>
                 <div className="shrink-0 text-center sm:pl-2">
                   <p className="text-xs uppercase tracking-[0.3em] text-[#e8d9ad]/70">Investment</p>
-                  <p className="mt-2 font-display text-4xl gold-text sm:text-5xl">2999/-</p>
-                  <p className="mt-1 text-xs text-[#e8d9ad]/60">Early Bird available</p>
-                  <a
-                    href="#register"
+                  <p className="mt-2 font-display text-3xl gold-text sm:text-4xl">Be an Early Bird</p>
+                  <button
+                    onClick={() => setFormOpen(true)}
                     className="mt-6 inline-block rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#d4af37]/40"
                   >
                     Claim Your Ticket
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
