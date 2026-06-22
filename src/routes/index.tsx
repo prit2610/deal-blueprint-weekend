@@ -802,14 +802,13 @@ function Index() {
                 </div>
                 <div className="shrink-0 text-center sm:pl-2">
                   <p className="text-xs uppercase tracking-[0.3em] text-[#e8d9ad]/70">Investment</p>
-                  <p className="mt-2 font-display text-4xl gold-text sm:text-5xl">2999/-</p>
-                  <p className="mt-1 text-xs text-[#e8d9ad]/60">Early Bird available</p>
-                  <a
-                    href="#register"
+                  <p className="mt-2 font-display text-3xl gold-text sm:text-4xl">Be an Early Bird</p>
+                  <button
+                    onClick={() => setFormOpen(true)}
                     className="mt-6 inline-block rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#d4af37]/40"
                   >
                     Claim Your Ticket
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
