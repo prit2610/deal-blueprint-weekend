@@ -487,23 +487,16 @@ function Index() {
               use during live transactions.
             </p>
           </div>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {[
+          <Steps
+            items={[
               "Participants divided into teams",
               "Mock M&A transaction assigned",
               "Analyse the deal",
               "Evaluate key questions",
               "Prepare a Deal Summary",
               "Present recommendations",
-            ].map((t) => (
-              <li
-                key={t}
-                className="spotlight-card rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
+            ]}
+          />
         </div>
       </Section>
 
