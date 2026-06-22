@@ -192,7 +192,7 @@ function DayBadge({ day, label }: { day: string; label: string }) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "From Claude to Closed Deals — 2-Day Investment Banking Immersion" },
+      { title: "From AI to Closed Deals — 2-Day Investment Banking Immersion" },
       {
         name: "description",
         content:
