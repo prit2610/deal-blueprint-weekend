@@ -565,9 +565,18 @@ function Index() {
             },
           ].map((s) => (
             <div key={s.title} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-              <p className="font-display text-xl">{s.title}</p>
-              <p className="mt-3 text-sm font-medium">{s.name}</p>
-              <p className="text-sm text-muted-foreground">{s.role}</p>
+              <div className="mb-6 flex items-center gap-4">
+                <img
+                  src={s.img}
+                  alt={s.name}
+                  className="h-16 w-16 shrink-0 rounded-full border-2 border-primary/40 object-cover"
+                />
+                <div>
+                  <p className="font-display text-xl">{s.title}</p>
+                  <p className="mt-1 text-sm font-medium">{s.name}</p>
+                  <p className="text-sm text-muted-foreground">{s.role}</p>
+                </div>
+              </div>
               <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2">
                 {s.topics.map((t) => (
                   <li key={t} className="text-sm text-muted-foreground">
