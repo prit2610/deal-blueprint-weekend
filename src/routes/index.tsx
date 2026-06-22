@@ -121,6 +121,73 @@ function useSpotlight() {
   }, []);
 }
 
+// Sequentially reveal a list of steps one after another when scrolled into view
+function Steps({ items }: { items: string[] }) {
+  const containerRef = useRef<HTMLOListElement>(null);
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          items.forEach((_, i) => {
+            window.setTimeout(() => setShown((s) => Math.max(s, i + 1)), i * 320);
+          });
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [items.length]);
+  return (
+    <ol ref={containerRef} className="relative space-y-0">
+      <span
+        className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-primary/50 via-border to-transparent"
+        aria-hidden
+      />
+      {items.map((t, i) => (
+        <li
+          key={t}
+          className={`step-item is-visible relative flex items-start gap-5 py-4 ${
+            i < shown ? "is-visible" : ""
+          }`}
+          style={{ opacity: i < shown ? undefined : 0 }}
+        >
+          <span
+            className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold transition-colors duration-500 ${
+              i < shown
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-background text-muted-foreground"
+            }`}
+          >
+            {i + 1}
+          </span>
+          <span className="pt-1.5 text-sm sm:text-base">{t}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+// Clearly compartmentalised Day heading badge
+function DayBadge({ day, label }: { day: string; label: string }) {
+  return (
+    <div className="inline-flex items-stretch overflow-hidden rounded-md border border-primary/40 shadow-lg shadow-primary/5">
+      <span className="flex items-center bg-primary px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground">
+        {day}
+      </span>
+      <span className="flex items-center bg-card px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+
+
 
 
 export const Route = createFileRoute("/")({
