@@ -136,7 +136,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Financial modelling with Claude, M&A & PE deep-dives, and a live M&A case simulation. 4th & 5th July 2026, Mumbai.",
+          "Financial modelling with Claude, M&A & PE deep-dives, and a live M&A case simulation. 11th and 12th\u00a0 June\u00a0, Mumbai.",
       },
       { property: "og:image", content: skylineHero },
     ],
@@ -247,10 +247,10 @@ function Index() {
 
           <dl className="mt-10 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
             {[
-              ["Dates", "4th & 5th July 2026"],
+              ["Dates", "11th and 12th\u00a0 June\u00a0"],
               ["Timing", "4 PM – 8 PM"],
               ["Location", "Mumbai"],
-              ["Seats", "Limited to 25"],
+              ["Seats", "Very Limited Seats\u00a0"],
             ].map(([k, v]) => (
               <div key={k}>
                 <dt className="text-xs uppercase tracking-widest text-muted-foreground">{k}</dt>
