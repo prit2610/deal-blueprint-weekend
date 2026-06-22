@@ -196,7 +196,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A 2-day Investment Banking immersion weekend in Mumbai. Learn AI-powered financial modelling, M&A and Private Equity, and a live deal simulation. Limited to 25 seats.",
+          "A 2-day Investment Banking immersion weekend in Mumbai. Learn AI-powered financial modelling, M&A and Private Equity, and a live deal simulation. Limited seats available.",
       },
       { property: "og:title", content: "From Claude to Closed Deals — IB Immersion Weekend" },
       {
