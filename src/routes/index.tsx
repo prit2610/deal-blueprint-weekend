@@ -656,20 +656,27 @@ function Index() {
         <div className="grid gap-12 md:grid-cols-2">
           <div>
             <Eyebrow>Who Should Attend</Eyebrow>
-            <ul className="mt-6 space-y-3">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               {[
-                "Finance Students",
-                "CFA Candidates",
-                "CA Students",
-                "MBA Students",
-                "Aspiring Investment Bankers",
-                "Early Career Finance Professionals",
+                { label: "Finance Students", icon: "🎓" },
+                { label: "CFA Candidates", icon: "📊" },
+                { label: "CA Students", icon: "🧮" },
+                { label: "MBA Students", icon: "🏛️" },
+                { label: "Aspiring Investment Bankers", icon: "💼" },
+                { label: "Early Career Finance Professionals", icon: "📈" },
               ].map((t) => (
-                <li key={t} className="border-b border-border pb-3 text-sm">
-                  {t}
-                </li>
+                <div
+                  key={t.label}
+                  className="spotlight-card flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-2xl">
+                    {t.icon}
+                  </span>
+                  <span className="text-sm font-medium leading-snug">{t.label}</span>
+                </div>
               ))}
-            </ul>
+            </div>
+
           </div>
           <div>
             <Eyebrow>What You'll Walk Away With</Eyebrow>
