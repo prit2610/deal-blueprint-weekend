@@ -679,7 +679,7 @@ function Index() {
                 </div>
                 <div className="shrink-0 text-center sm:pl-2">
                   <p className="text-xs uppercase tracking-[0.3em] text-[#e8d9ad]/70">Investment</p>
-                  <p className="mt-2 font-display text-4xl gold-text sm:text-5xl">[Price]</p>
+                  <p className="mt-2 font-display text-4xl gold-text sm:text-5xl">2999/-</p>
                   <p className="mt-1 text-xs text-[#e8d9ad]/60">Early Bird available</p>
                   <a
                     href="#register"
