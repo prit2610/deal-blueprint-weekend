@@ -350,8 +350,10 @@ function Index() {
   const scrollY = useScrollY();
   const active = useActiveSection(NAV.map((n) => n.href.replace("#", "")));
   useSpotlight();
+  const [formOpen, setFormOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <RegistrationModal open={formOpen} onClose={() => setFormOpen(false)} />
       <ScrollProgress />
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
