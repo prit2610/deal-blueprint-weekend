@@ -653,7 +653,7 @@ function Index() {
       <Section id="pricing">
         <Eyebrow>Pricing</Eyebrow>
         <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">
-          Only 25 Seats Available
+          Limited Seats available{"\u00a0"}<br /><br />
         </h2>
         <div className="mt-12">
           <div className="golden-ticket mx-auto max-w-3xl rounded-2xl p-px">
