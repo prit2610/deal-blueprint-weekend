@@ -303,7 +303,7 @@ function Index() {
 
           <Eyebrow>A 2-Day Investment Banking Immersion Weekend</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            From Claude to Closed Deals.
+            From AI to Closed Deals.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Learn the Financial Modelling framework being used on live Investment Banking deals,
