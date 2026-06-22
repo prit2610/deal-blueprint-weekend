@@ -196,7 +196,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A 2-day Investment Banking immersion weekend in Mumbai. Learn AI-powered financial modelling, M&A and Private Equity, and a live deal simulation. Limited to 25 seats.",
+          "A 2-day Investment Banking immersion weekend in Mumbai. Learn AI-powered financial modelling, M&A and Private Equity, and a live deal simulation. Limited seats available.",
       },
       { property: "og:title", content: "From Claude to Closed Deals — IB Immersion Weekend" },
       {
@@ -653,7 +653,7 @@ function Index() {
       <Section id="pricing">
         <Eyebrow>Pricing</Eyebrow>
         <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">
-          Only 25 Seats Available
+          Limited Seats available{"\u00a0"}<br /><br />
         </h2>
         <div className="mt-12">
           <div className="golden-ticket mx-auto max-w-3xl rounded-2xl p-px">
