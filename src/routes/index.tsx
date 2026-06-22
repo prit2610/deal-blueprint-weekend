@@ -385,7 +385,7 @@ function Index() {
 
       {/* Section 3 — Day 1 */}
       <Section id="experience">
-        <Eyebrow>Day 1 — What You'll Experience</Eyebrow>
+        <DayBadge day="Day 1" label="What You'll Experience" />
         <h2 className="mt-5 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl">
           Financial Modelling Using Claude
         </h2>
