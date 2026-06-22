@@ -538,6 +538,7 @@ function Index() {
               title: "How M&A Transactions Actually Work",
               name: "Deepam Gala",
               role: "Associate – Inga Ventures",
+              img: deepamImg,
               topics: [
                 "Deal Origination",
                 "Pitching Process",
@@ -552,6 +553,7 @@ function Index() {
               title: "How Private Equity Deals Work",
               name: "Devesh Bhardwaj",
               role: "Senior Analyst – Anand Rathi Investment Banking",
+              img: deveshImg,
               topics: [
                 "PE Investment Process",
                 "Deal Sourcing",
