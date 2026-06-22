@@ -423,7 +423,7 @@ function Index() {
 
       {/* Section 4 — Day 2 */}
       <Section>
-        <Eyebrow>Day 2 — Inside Investment Banking</Eyebrow>
+        <DayBadge day="Day 2" label="Inside Investment Banking" />
         <h2 className="mt-5 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl">
           Learn Directly From Professionals Working In The Industry
         </h2>
