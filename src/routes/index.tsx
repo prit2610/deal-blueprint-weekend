@@ -121,6 +121,72 @@ function useSpotlight() {
   }, []);
 }
 
+// Sequentially reveal a list of steps one after another when scrolled into view
+function Steps({ items }: { items: string[] }) {
+  const containerRef = useRef<HTMLOListElement>(null);
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          items.forEach((_, i) => {
+            window.setTimeout(() => setShown((s) => Math.max(s, i + 1)), i * 320);
+          });
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [items.length]);
+  return (
+    <ol ref={containerRef} className="relative space-y-0">
+      <span
+        className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-primary/50 via-border to-transparent"
+        aria-hidden
+      />
+      {items.map((t, i) => (
+        <li
+          key={t}
+          className={`step-item relative flex items-start gap-5 py-4 ${
+            i < shown ? "is-visible" : ""
+          }`}
+        >
+          <span
+            className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold transition-colors duration-500 ${
+              i < shown
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-background text-muted-foreground"
+            }`}
+          >
+            {i + 1}
+          </span>
+          <span className="pt-1.5 text-sm sm:text-base">{t}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+// Clearly compartmentalised Day heading badge
+function DayBadge({ day, label }: { day: string; label: string }) {
+  return (
+    <div className="inline-flex items-stretch overflow-hidden rounded-md border border-primary/40 shadow-lg shadow-primary/5">
+      <span className="flex items-center bg-primary px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground">
+        {day}
+      </span>
+      <span className="flex items-center bg-card px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+
+
 
 
 export const Route = createFileRoute("/")({
@@ -319,7 +385,7 @@ function Index() {
 
       {/* Section 3 — Day 1 */}
       <Section id="experience">
-        <Eyebrow>Day 1 — What You'll Experience</Eyebrow>
+        <DayBadge day="Day 1" label="What You'll Experience" />
         <h2 className="mt-5 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl">
           Financial Modelling Using Claude
         </h2>
@@ -357,7 +423,7 @@ function Index() {
 
       {/* Section 4 — Day 2 */}
       <Section>
-        <Eyebrow>Day 2 — Inside Investment Banking</Eyebrow>
+        <DayBadge day="Day 2" label="Inside Investment Banking" />
         <h2 className="mt-5 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl">
           Learn Directly From Professionals Working In The Industry
         </h2>
@@ -421,23 +487,16 @@ function Index() {
               use during live transactions.
             </p>
           </div>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {[
+          <Steps
+            items={[
               "Participants divided into teams",
               "Mock M&A transaction assigned",
               "Analyse the deal",
               "Evaluate key questions",
               "Prepare a Deal Summary",
               "Present recommendations",
-            ].map((t) => (
-              <li
-                key={t}
-                className="spotlight-card rounded-sm border border-border bg-card px-5 py-4 text-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
+            ]}
+          />
         </div>
       </Section>
 
@@ -596,17 +655,42 @@ function Index() {
         <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">
           Only 25 Seats Available
         </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
-          {[
-            { tier: "Early Bird Pricing", price: "[Price]", note: "Limited availability" },
-            { tier: "Regular Pricing", price: "[Price]", note: "Standard registration" },
-          ].map((p) => (
-            <div key={p.tier} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-              <p className="text-sm text-muted-foreground">{p.tier}</p>
-              <p className="mt-3 font-display text-4xl">{p.price}</p>
-              <p className="mt-2 text-sm text-muted-foreground">{p.note}</p>
+        <div className="mt-12">
+          <div className="golden-ticket mx-auto max-w-3xl rounded-2xl p-px">
+            <span className="ticket-notch -left-3.5" />
+            <span className="ticket-notch -right-3.5" />
+            <div className="relative z-[1] rounded-2xl p-8 sm:p-12">
+              <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+                <div className="border-b border-dashed border-[rgba(214,178,99,0.35)] pb-8 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-10">
+                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#d4af37]">
+                    Admit One · VIP
+                  </p>
+                  <p className="mt-4 font-display text-3xl gold-text sm:text-4xl">
+                    The Golden Ticket
+                  </p>
+                  <p className="mt-3 max-w-sm text-sm text-[#e8d9ad]/80">
+                    A 2-day Investment Banking immersion. Financial modelling, M&amp;A, Private
+                    Equity, a live deal simulation &amp; an exclusive networking dinner.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-xs uppercase tracking-widest text-[#e8d9ad]/70">
+                    <span>11th &amp; 12th June · Mumbai</span>
+                    <span>Very Limited Seats</span>
+                  </div>
+                </div>
+                <div className="shrink-0 text-center sm:pl-2">
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#e8d9ad]/70">Investment</p>
+                  <p className="mt-2 font-display text-4xl gold-text sm:text-5xl">[Price]</p>
+                  <p className="mt-1 text-xs text-[#e8d9ad]/60">Early Bird available</p>
+                  <a
+                    href="#register"
+                    className="mt-6 inline-block rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#d4af37]/40"
+                  >
+                    Claim Your Ticket
+                  </a>
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </Section>
 
