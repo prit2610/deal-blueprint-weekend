@@ -151,10 +151,9 @@ function Steps({ items }: { items: string[] }) {
       {items.map((t, i) => (
         <li
           key={t}
-          className={`step-item is-visible relative flex items-start gap-5 py-4 ${
+          className={`step-item relative flex items-start gap-5 py-4 ${
             i < shown ? "is-visible" : ""
           }`}
-          style={{ opacity: i < shown ? undefined : 0 }}
         >
           <span
             className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold transition-colors duration-500 ${
