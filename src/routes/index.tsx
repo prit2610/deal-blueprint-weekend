@@ -4,6 +4,14 @@ import skylineHero from "@/assets/skyline-hero.jpg";
 import karanImg from "@/assets/karan.png";
 import deveshImg from "@/assets/devesh.png";
 import deepamImg from "@/assets/deepam.png";
+import {
+  GraduationCap,
+  LineChart,
+  Calculator,
+  Landmark,
+  Briefcase,
+  TrendingUp,
+} from "lucide-react";
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
@@ -186,17 +194,56 @@ function DayBadge({ day, label }: { day: string; label: string }) {
 }
 
 // Registration form modal with disclaimer
+const EDU_OPTIONS = [
+  "Graduate",
+  "Post Graduate",
+  "MBA",
+  "CA/CFA/ACCA/CMA",
+  "Engineering",
+  "Others",
+];
+const WORK_OPTIONS = [
+  "Fresher",
+  "Audit",
+  "Research",
+  "Consulting & Strategy",
+  "Taxation",
+  "Operations",
+  "Corp Finance",
+  "Credit",
+  "Sales & BD",
+];
+
 function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", pursuing: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    transition: "",
+    education: [] as string[],
+    work: [] as string[],
+  });
+
+  const toggle = (key: "education" | "work", value: string) =>
+    setForm((f) => ({
+      ...f,
+      [key]: f[key].includes(value) ? f[key].filter((v) => v !== value) : [...f[key], value],
+    }));
+
   if (!open) return null;
+
+  const labelCls = "text-xs font-semibold uppercase tracking-widest text-[#e8d9ad]";
+  const inputCls =
+    "mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm focus:border-primary focus:outline-none";
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -229,49 +276,103 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
               <strong className="text-[#d4af37]">₹2999/-</strong>.
             </div>
             <form
-              className="mt-6 space-y-4"
+              className="mt-6 space-y-5"
               onSubmit={(e) => {
                 e.preventDefault();
                 setSubmitted(true);
               }}
             >
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Name
-                </label>
+                <label className={labelCls}>Name</label>
                 <input
                   required
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="Your full name"
+                  className={inputCls}
+                  placeholder="Enter your full name"
                 />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Email
-                </label>
+                <label className={labelCls}>Phone Number</label>
+                <input
+                  required
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                  className={inputCls}
+                  placeholder="Enter your phone number"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Email</label>
                 <input
                   required
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="you@email.com"
+                  className={inputCls}
+                  placeholder="Enter your email"
                 />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  What are you currently pursuing?
-                </label>
-                <textarea
+                <label className={labelCls}>Are you looking to transition into IB?</label>
+                <select
                   required
-                  value={form.pursuing}
-                  onChange={(e) => setForm((f) => ({ ...f, pursuing: e.target.value }))}
-                  rows={3}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="e.g. CFA Level 1, MBA Finance, working as an analyst…"
-                />
+                  value={form.transition}
+                  onChange={(e) => setForm((f) => ({ ...f, transition: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Maybe">Maybe / Exploring</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>
+                  What is your educational qualification?{" "}
+                  <span className="normal-case text-muted-foreground">(Select all that apply)</span>
+                </label>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {EDU_OPTIONS.map((opt) => (
+                    <label
+                      key={opt}
+                      className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={form.education.includes(opt)}
+                        onChange={() => toggle("education", opt)}
+                        className="h-4 w-4 accent-[#d4af37]"
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>
+                  Where have you worked previously?{" "}
+                  <span className="normal-case text-muted-foreground">(Select all that apply)</span>
+                </label>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {WORK_OPTIONS.map((opt) => (
+                    <label
+                      key={opt}
+                      className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={form.work.includes(opt)}
+                        onChange={() => toggle("work", opt)}
+                        className="h-4 w-4 accent-[#d4af37]"
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
               </div>
               <button
                 type="submit"
@@ -380,12 +481,12 @@ function Index() {
               );
             })}
           </ul>
-          <a
-            href="#register"
+          <button
+            onClick={() => setFormOpen(true)}
             className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Seat
-          </a>
+          </button>
         </nav>
       </header>
 
@@ -431,12 +532,12 @@ function Index() {
           </dl>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#register"
+            <button
+              onClick={() => setFormOpen(true)}
               className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
             >
               Reserve Your Seat
-            </a>
+            </button>
             <a
               href="#experience"
               className="rounded-sm border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
@@ -658,24 +759,25 @@ function Index() {
             <Eyebrow>Who Should Attend</Eyebrow>
             <div className="mt-6 grid grid-cols-2 gap-4">
               {[
-                { label: "Finance Students", icon: "🎓" },
-                { label: "CFA Candidates", icon: "📊" },
-                { label: "CA Students", icon: "🧮" },
-                { label: "MBA Students", icon: "🏛️" },
-                { label: "Aspiring Investment Bankers", icon: "💼" },
-                { label: "Early Career Finance Professionals", icon: "📈" },
-              ].map((t) => (
+                { label: "Finance Students", Icon: GraduationCap },
+                { label: "CFA Candidates", Icon: LineChart },
+                { label: "CA Students", Icon: Calculator },
+                { label: "MBA Students", Icon: Landmark },
+                { label: "Aspiring Investment Bankers", Icon: Briefcase },
+                { label: "Early Career Finance Professionals", Icon: TrendingUp },
+              ].map(({ label, Icon }) => (
                 <div
-                  key={t.label}
+                  key={label}
                   className="spotlight-card flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-2xl">
-                    {t.icon}
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f7e7b0]/20 via-[#d4af37]/15 to-[#b8860b]/10 ring-1 ring-[#d4af37]/30">
+                    <Icon className="h-6 w-6 text-[#d4af37]" strokeWidth={1.5} />
                   </span>
-                  <span className="text-sm font-medium leading-snug">{t.label}</span>
+                  <span className="text-sm font-medium leading-snug">{label}</span>
                 </div>
               ))}
             </div>
+
 
           </div>
           <div>
@@ -826,12 +928,12 @@ function Index() {
           This weekend is designed to help you build all five.
         </p>
         <div className="mt-10 flex justify-center">
-          <a
-            href="mailto:hello@eccapitalpartners.com?subject=Reserve%20Seat%20-%20IB%20Immersion%20Weekend"
+          <button
+            onClick={() => setFormOpen(true)}
             className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
-          </a>
+          </button>
         </div>
       </Section>
 
