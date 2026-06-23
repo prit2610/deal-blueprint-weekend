@@ -272,11 +272,6 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
         ) : (
           <>
             <p className="font-display text-2xl gold-text">Reserve Your Seat</p>
-            <div className="mt-4 rounded-lg border border-[rgba(214,178,99,0.3)] bg-[rgba(214,178,99,0.08)] p-4 text-xs leading-relaxed text-[#e8d9ad]/90">
-              <strong className="text-[#d4af37]">Disclaimer:</strong> This event is hosted in
-              Andheri, Mumbai. The price for the 2-day immersion is{" "}
-              <strong className="text-[#d4af37]">₹2999/-</strong>.
-            </div>
             <form
               className="mt-6 space-y-5"
               onSubmit={(e) => {
