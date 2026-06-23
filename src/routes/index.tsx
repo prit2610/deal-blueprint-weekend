@@ -524,12 +524,12 @@ function Index() {
           </dl>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#register"
+            <button
+              onClick={() => setFormOpen(true)}
               className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
             >
               Reserve Your Seat
-            </a>
+            </button>
             <a
               href="#experience"
               className="rounded-sm border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
