@@ -312,6 +312,36 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                 />
               </div>
               <div>
+                <label className={labelCls}>Are you open to attending an offline workshop in Andheri, Mumbai?</label>
+                <select
+                  required
+                  value={form.openOffline}
+                  onChange={(e) => setForm((f) => ({ ...f, openOffline: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Are you open to the ticket price of ₹2999/-?</label>
+                <select
+                  required
+                  value={form.openPaid}
+                  onChange={(e) => setForm((f) => ({ ...f, openPaid: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div>
                 <label className={labelCls}>Are you looking to transition into IB?</label>
                 <select
                   required
