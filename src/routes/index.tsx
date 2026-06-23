@@ -223,6 +223,8 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
     transition: "",
     education: [] as string[],
     work: [] as string[],
+    openOffline: "",
+    openPaid: "",
   });
 
   const toggle = (key: "education" | "work", value: string) =>
@@ -270,11 +272,6 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
         ) : (
           <>
             <p className="font-display text-2xl gold-text">Reserve Your Seat</p>
-            <div className="mt-4 rounded-lg border border-[rgba(214,178,99,0.3)] bg-[rgba(214,178,99,0.08)] p-4 text-xs leading-relaxed text-[#e8d9ad]/90">
-              <strong className="text-[#d4af37]">Disclaimer:</strong> This event is hosted in
-              Andheri, Mumbai. The price for the 2-day immersion is{" "}
-              <strong className="text-[#d4af37]">₹2999/-</strong>.
-            </div>
             <form
               className="mt-6 space-y-5"
               onSubmit={(e) => {
@@ -313,6 +310,36 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                   className={inputCls}
                   placeholder="Enter your email"
                 />
+              </div>
+              <div>
+                <label className={labelCls}>Are you open to attending an offline workshop in Andheri, Mumbai?</label>
+                <select
+                  required
+                  value={form.openOffline}
+                  onChange={(e) => setForm((f) => ({ ...f, openOffline: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Are you open to the ticket price of ₹2999/-?</label>
+                <select
+                  required
+                  value={form.openPaid}
+                  onChange={(e) => setForm((f) => ({ ...f, openPaid: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
               </div>
               <div>
                 <label className={labelCls}>Are you looking to transition into IB?</label>
@@ -482,7 +509,7 @@ function Index() {
             })}
           </ul>
           <button
-            onClick={() => setFormOpen(true)}
+            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Seat
@@ -533,7 +560,7 @@ function Index() {
 
           <div className="mt-10 flex flex-wrap gap-3">
             <button
-              onClick={() => setFormOpen(true)}
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
             >
               Reserve Your Seat
@@ -929,7 +956,7 @@ function Index() {
         </p>
         <div className="mt-10 flex justify-center">
           <button
-            onClick={() => setFormOpen(true)}
+            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
