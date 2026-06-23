@@ -931,7 +931,7 @@ function Index() {
         </p>
         <div className="mt-10 flex justify-center">
           <button
-            onClick={() => setFormOpen(true)}
+            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
