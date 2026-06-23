@@ -759,24 +759,25 @@ function Index() {
             <Eyebrow>Who Should Attend</Eyebrow>
             <div className="mt-6 grid grid-cols-2 gap-4">
               {[
-                { label: "Finance Students", icon: "🎓" },
-                { label: "CFA Candidates", icon: "📊" },
-                { label: "CA Students", icon: "🧮" },
-                { label: "MBA Students", icon: "🏛️" },
-                { label: "Aspiring Investment Bankers", icon: "💼" },
-                { label: "Early Career Finance Professionals", icon: "📈" },
-              ].map((t) => (
+                { label: "Finance Students", Icon: GraduationCap },
+                { label: "CFA Candidates", Icon: LineChart },
+                { label: "CA Students", Icon: Calculator },
+                { label: "MBA Students", Icon: Landmark },
+                { label: "Aspiring Investment Bankers", Icon: Briefcase },
+                { label: "Early Career Finance Professionals", Icon: TrendingUp },
+              ].map(({ label, Icon }) => (
                 <div
-                  key={t.label}
+                  key={label}
                   className="spotlight-card flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-2xl">
-                    {t.icon}
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f7e7b0]/20 via-[#d4af37]/15 to-[#b8860b]/10 ring-1 ring-[#d4af37]/30">
+                    <Icon className="h-6 w-6 text-[#d4af37]" strokeWidth={1.5} />
                   </span>
-                  <span className="text-sm font-medium leading-snug">{t.label}</span>
+                  <span className="text-sm font-medium leading-snug">{label}</span>
                 </div>
               ))}
             </div>
+
 
           </div>
           <div>
