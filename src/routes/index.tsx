@@ -223,6 +223,8 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
     transition: "",
     education: [] as string[],
     work: [] as string[],
+    openOffline: "",
+    openPaid: "",
   });
 
   const toggle = (key: "education" | "work", value: string) =>
