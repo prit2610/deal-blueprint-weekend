@@ -919,12 +919,12 @@ function Index() {
           This weekend is designed to help you build all five.
         </p>
         <div className="mt-10 flex justify-center">
-          <a
-            href="mailto:hello@eccapitalpartners.com?subject=Reserve%20Seat%20-%20IB%20Immersion%20Weekend"
+          <button
+            onClick={() => setFormOpen(true)}
             className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
-          </a>
+          </button>
         </div>
       </Section>
 
