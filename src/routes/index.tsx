@@ -473,12 +473,12 @@ function Index() {
               );
             })}
           </ul>
-          <a
-            href="#register"
+          <button
+            onClick={() => setFormOpen(true)}
             className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Seat
-          </a>
+          </button>
         </nav>
       </header>
 
