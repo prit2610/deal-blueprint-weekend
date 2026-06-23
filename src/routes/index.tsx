@@ -186,17 +186,56 @@ function DayBadge({ day, label }: { day: string; label: string }) {
 }
 
 // Registration form modal with disclaimer
+const EDU_OPTIONS = [
+  "Graduate",
+  "Post Graduate",
+  "MBA",
+  "CA/CFA/ACCA/CMA",
+  "Engineering",
+  "Others",
+];
+const WORK_OPTIONS = [
+  "Fresher",
+  "Audit",
+  "Research",
+  "Consulting & Strategy",
+  "Taxation",
+  "Operations",
+  "Corp Finance",
+  "Credit",
+  "Sales & BD",
+];
+
 function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", pursuing: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    transition: "",
+    education: [] as string[],
+    work: [] as string[],
+  });
+
+  const toggle = (key: "education" | "work", value: string) =>
+    setForm((f) => ({
+      ...f,
+      [key]: f[key].includes(value) ? f[key].filter((v) => v !== value) : [...f[key], value],
+    }));
+
   if (!open) return null;
+
+  const labelCls = "text-xs font-semibold uppercase tracking-widest text-[#e8d9ad]";
+  const inputCls =
+    "mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm focus:border-primary focus:outline-none";
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -229,49 +268,103 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
               <strong className="text-[#d4af37]">₹2999/-</strong>.
             </div>
             <form
-              className="mt-6 space-y-4"
+              className="mt-6 space-y-5"
               onSubmit={(e) => {
                 e.preventDefault();
                 setSubmitted(true);
               }}
             >
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Name
-                </label>
+                <label className={labelCls}>Name</label>
                 <input
                   required
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="Your full name"
+                  className={inputCls}
+                  placeholder="Enter your full name"
                 />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Email
-                </label>
+                <label className={labelCls}>Phone Number</label>
+                <input
+                  required
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                  className={inputCls}
+                  placeholder="Enter your phone number"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Email</label>
                 <input
                   required
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="you@email.com"
+                  className={inputCls}
+                  placeholder="Enter your email"
                 />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">
-                  What are you currently pursuing?
-                </label>
-                <textarea
+                <label className={labelCls}>Are you looking to transition into IB?</label>
+                <select
                   required
-                  value={form.pursuing}
-                  onChange={(e) => setForm((f) => ({ ...f, pursuing: e.target.value }))}
-                  rows={3}
-                  className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                  placeholder="e.g. CFA Level 1, MBA Finance, working as an analyst…"
-                />
+                  value={form.transition}
+                  onChange={(e) => setForm((f) => ({ ...f, transition: e.target.value }))}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Maybe">Maybe / Exploring</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>
+                  What is your educational qualification?{" "}
+                  <span className="normal-case text-muted-foreground">(Select all that apply)</span>
+                </label>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {EDU_OPTIONS.map((opt) => (
+                    <label
+                      key={opt}
+                      className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={form.education.includes(opt)}
+                        onChange={() => toggle("education", opt)}
+                        className="h-4 w-4 accent-[#d4af37]"
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>
+                  Where have you worked previously?{" "}
+                  <span className="normal-case text-muted-foreground">(Select all that apply)</span>
+                </label>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {WORK_OPTIONS.map((opt) => (
+                    <label
+                      key={opt}
+                      className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={form.work.includes(opt)}
+                        onChange={() => toggle("work", opt)}
+                        className="h-4 w-4 accent-[#d4af37]"
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
               </div>
               <button
                 type="submit"
