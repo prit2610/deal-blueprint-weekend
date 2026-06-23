@@ -4,6 +4,14 @@ import skylineHero from "@/assets/skyline-hero.jpg";
 import karanImg from "@/assets/karan.png";
 import deveshImg from "@/assets/devesh.png";
 import deepamImg from "@/assets/deepam.png";
+import {
+  GraduationCap,
+  LineChart,
+  Calculator,
+  Landmark,
+  Briefcase,
+  TrendingUp,
+} from "lucide-react";
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
