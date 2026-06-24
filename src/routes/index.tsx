@@ -488,7 +488,7 @@ function Index() {
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#hero" className="flex items-center gap-2 font-display text-lg tracking-tight transition-opacity hover:opacity-70">
-            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-8 w-auto rounded-sm" />
+            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-10 w-auto rounded-md ring-1 ring-white/20" />
             <span>Encoding Careers</span>
           </a>
           <ul className="hidden items-center gap-7 md:flex">
@@ -969,7 +969,7 @@ function Index() {
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
           <span className="flex items-center gap-2 font-display text-foreground">
-            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-6 w-auto rounded-sm" />
+            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-8 w-auto rounded-md ring-1 ring-white/20" />
             <span>Encoding Careers</span>
           </span>
           <span>© 2026 · Investment Banking Immersion Weekend · Mumbai</span>
