@@ -4,6 +4,7 @@ import skylineHero from "@/assets/skyline-hero.jpg";
 import karanImg from "@/assets/karan.png";
 import deveshImg from "@/assets/devesh.png";
 import deepamImg from "@/assets/deepam.png";
+import ecLogoAsset from "@/assets/ec-logo.jpeg.asset.json";
 import {
   GraduationCap,
   LineChart,
@@ -486,8 +487,9 @@ function Index() {
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#hero" className="font-display text-lg tracking-tight transition-opacity hover:opacity-70">
-            <span className="whitespace-pre-wrap">Encoding Careers&nbsp;{"\n\n"}</span>
+          <a href="#hero" className="flex items-center gap-2 font-display text-lg tracking-tight transition-opacity hover:opacity-70">
+            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-8 w-auto rounded-sm" />
+            <span>Encoding Careers</span>
           </a>
           <ul className="hidden items-center gap-7 md:flex">
             {NAV.map((n) => {
@@ -966,7 +968,10 @@ function Index() {
 
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
-          <span className="font-display text-foreground whitespace-pre-wrap">Encoding Careers&nbsp;{"\n\n"}</span>
+          <span className="flex items-center gap-2 font-display text-foreground">
+            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-6 w-auto rounded-sm" />
+            <span>Encoding Careers</span>
+          </span>
           <span>© 2026 · Investment Banking Immersion Weekend · Mumbai</span>
         </div>
       </footer>
