@@ -644,7 +644,7 @@ function Index() {
             <Eyebrow>Session Led By</Eyebrow>
             <p className="mt-4 font-display text-2xl">Karan Damania</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Managing Partner, Encoding Careers · Co-Founder, Encoding Careers
+              Managing Partner EC Capitals · Co-Founder, Encoding Careers
             </p>
             <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
               The framework taught in this session has already been adopted by finance professionals
@@ -837,7 +837,7 @@ function Index() {
         </h2>
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {[
-            { name: "Karan Damania", role: "Managing Partner, Encoding Careers", img: karanImg },
+            { name: "Karan Damania", role: "Managing Partner, EC Capitals\u00a0", img: karanImg },
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
@@ -863,7 +863,7 @@ function Index() {
         <div className="mt-12 grid gap-10 md:grid-cols-2">
           {[
             {
-              day: "Saturday, 4th July",
+              day: "Saturday, 11th July",
               items: [
                 ["4:00 PM", "Financial Modelling Using Claude"],
                 ["6:00 PM", "Hi Tea Break"],
@@ -872,7 +872,7 @@ function Index() {
               ],
             },
             {
-              day: "Sunday, 5th July",
+              day: "Sunday, 12th July",
               items: [
                 ["4:00 PM", "M&A Process in Investment Banking"],
                 ["5:00 PM", "Private Equity Deal Walkthrough"],
