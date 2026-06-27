@@ -345,7 +345,7 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
               </div>
               <div>
                 <label className={labelCls}>
-                  Are you open to attending an offline workshop in Andheri, Mumbai?
+                  Are you open to attending the event in Andheri, Mumbai?
                 </label>
                 <select
                   required
