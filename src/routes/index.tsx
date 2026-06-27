@@ -303,7 +303,9 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                   });
                   setSubmitted(true);
                 } catch (err) {
-                  setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+                  setError(
+                    err instanceof Error ? err.message : "Something went wrong. Please try again.",
+                  );
                 } finally {
                   setIsSubmitting(false);
                 }
@@ -433,9 +435,7 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                   ))}
                 </div>
               </div>
-              {error && (
-                <p className="text-sm text-red-500">{error}</p>
-              )}
+              {error && <p className="text-sm text-red-500">{error}</p>}
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -454,7 +454,7 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "From AI to Closed Deals — 2-Day Investment Banking Immersion" },
+      { title: "2-Day Investment Banking Immersion - From AI to Closed Deals" },
       {
         name: "description",
         content:
