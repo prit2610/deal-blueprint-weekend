@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { leadApi } from "@/lib/api";
 import skylineHero from "@/assets/skyline-hero.jpg";
 import karanImg from "@/assets/karan.png";
 import deveshImg from "@/assets/devesh.png";
 import deepamImg from "@/assets/deepam.png";
-import ecLogoAsset from "@/assets/ec-logo.jpeg.asset.json";
+import ecLogoAsset from "@/assets/ec_logo.png";
 import {
   GraduationCap,
   LineChart,
@@ -217,6 +218,8 @@ const WORK_OPTIONS = [
 
 function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -246,7 +249,7 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
       onClick={onClose}
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto scrollbar-hide rounded-2xl border border-[rgba(214,178,99,0.4)] bg-card p-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -275,9 +278,35 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
             <p className="font-display text-2xl gold-text">Reserve Your Seat</p>
             <form
               className="mt-6 space-y-5"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                setSubmitted(true);
+                setError("");
+                setIsSubmitting(true);
+                try {
+                  const notes = [
+                    form.openOffline &&
+                      `Open to offline workshop (Andheri, Mumbai): ${form.openOffline}`,
+                    form.openPaid && `Open to ₹2999 ticket: ${form.openPaid}`,
+                    form.transition && `Transitioning to IB: ${form.transition}`,
+                    form.education.length > 0 && `Education: ${form.education.join(", ")}`,
+                    form.work.length > 0 && `Work experience: ${form.work.join(", ")}`,
+                  ]
+                    .filter(Boolean)
+                    .join("\n");
+
+                  await leadApi.register({
+                    name: form.name,
+                    phone: form.phone,
+                    email: form.email,
+                    source: "live event july",
+                    notes,
+                  });
+                  setSubmitted(true);
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+                } finally {
+                  setIsSubmitting(false);
+                }
               }}
             >
               <div>
@@ -313,7 +342,9 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                 />
               </div>
               <div>
-                <label className={labelCls}>Are you open to attending an offline workshop in Andheri, Mumbai?</label>
+                <label className={labelCls}>
+                  Are you open to attending an offline workshop in Andheri, Mumbai?
+                </label>
                 <select
                   required
                   value={form.openOffline}
@@ -402,11 +433,15 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
                   ))}
                 </div>
               </div>
+              {error && (
+                <p className="text-sm text-red-500">{error}</p>
+              )}
               <button
                 type="submit"
-                className="w-full rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5"
+                disabled={isSubmitting}
+                className="w-full rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Submit Registration
+                {isSubmitting ? "Submitting…" : "Submit Registration"}
               </button>
             </form>
           </>
@@ -415,11 +450,6 @@ function RegistrationModal({ open, onClose }: { open: boolean; onClose: () => vo
     </div>
   );
 }
-
-
-
-
-
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -487,9 +517,11 @@ function Index() {
       {/* Navigation */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#hero" className="flex items-center gap-2 font-display text-lg tracking-tight transition-opacity hover:opacity-70">
-            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-10 w-auto rounded-md ring-1 ring-white/20" />
-            <span>Encoding Careers</span>
+          <a
+            href="#hero"
+            className="flex items-center gap-2 font-display text-lg tracking-tight transition-opacity hover:opacity-70"
+          >
+            <img src={ecLogoAsset} alt="Encoding Careers" className="h-10 w-auto" />
           </a>
           <ul className="hidden items-center gap-7 md:flex">
             {NAV.map((n) => {
@@ -499,9 +531,7 @@ function Index() {
                   <a
                     href={n.href}
                     className={`relative text-sm transition-colors hover:text-foreground after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
-                      isActive
-                        ? "text-foreground after:w-full"
-                        : "text-muted-foreground after:w-0"
+                      isActive ? "text-foreground after:w-full" : "text-muted-foreground after:w-0"
                     }`}
                   >
                     {n.label}
@@ -511,7 +541,9 @@ function Index() {
             })}
           </ul>
           <button
-            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() =>
+              document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
+            }
             className="rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Seat
@@ -519,9 +551,11 @@ function Index() {
         </nav>
       </header>
 
-
       {/* Section 1 — Hero */}
-      <section id="hero" className="relative flex min-h-screen items-center overflow-hidden px-6 pt-20">
+      <section
+        id="hero"
+        className="relative flex min-h-screen items-center overflow-hidden px-6 pt-20"
+      >
         <img
           src={skylineHero}
           alt="Financial district skyline at dusk"
@@ -533,9 +567,11 @@ function Index() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background" />
         <div
           className="relative mx-auto w-full max-w-6xl py-24"
-          style={{ transform: `translateY(${scrollY * -0.08}px)`, opacity: Math.max(0, 1 - scrollY / 600) }}
+          style={{
+            transform: `translateY(${scrollY * -0.08}px)`,
+            opacity: Math.max(0, 1 - scrollY / 600),
+          }}
         >
-
           <Eyebrow>A 2-Day Investment Banking Immersion Weekend</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
             From AI to Closed Deals.
@@ -562,7 +598,9 @@ function Index() {
 
           <div className="mt-10 flex flex-wrap gap-3">
             <button
-              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() =>
+                document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
+              }
               className="rounded-sm bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
             >
               Reserve Your Seat
@@ -694,7 +732,10 @@ function Index() {
               note: "Including a walkthrough of a real transaction.",
             },
           ].map((s) => (
-            <div key={s.title} className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <div
+              key={s.title}
+              className="spotlight-card rounded-sm border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+            >
               <div className="mb-6 flex items-center gap-4">
                 <img
                   src={s.img}
@@ -806,8 +847,6 @@ function Index() {
                 </div>
               ))}
             </div>
-
-
           </div>
           <div>
             <Eyebrow>What You'll Walk Away With</Eyebrow>
@@ -843,7 +882,10 @@ function Index() {
             { name: "Deepam Gala", role: "Associate – Inga Ventures", img: deepamImg },
             { name: "Devesh Bhardwaj", role: "Senior Analyst – Anand Rathi IB", img: deveshImg },
           ].map((p) => (
-            <div key={p.name} className="group overflow-hidden spotlight-card rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <div
+              key={p.name}
+              className="group overflow-hidden spotlight-card rounded-sm border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+            >
               <div className="overflow-hidden rounded-sm">
                 <img
                   src={p.img}
@@ -861,7 +903,9 @@ function Index() {
       {/* Section 10 — Schedule */}
       <Section id="schedule">
         <Eyebrow>Event Schedule</Eyebrow>
-        <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">Two Days, Eight Hours Each</h2>
+        <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">
+          Two Days, Eight Hours Each
+        </h2>
         <div className="mt-12 grid gap-10 md:grid-cols-2">
           {[
             {
@@ -907,7 +951,9 @@ function Index() {
       <Section id="pricing">
         <Eyebrow>Pricing</Eyebrow>
         <h2 className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">
-          Limited Seats available{"\u00a0"}<br /><br />
+          Limited Seats available{"\u00a0"}
+          <br />
+          <br />
         </h2>
         <div className="mt-12">
           <div className="golden-ticket mx-auto max-w-3xl rounded-2xl p-px">
@@ -933,7 +979,9 @@ function Index() {
                 </div>
                 <div className="shrink-0 text-center sm:pl-2">
                   <p className="text-xs uppercase tracking-[0.3em] text-[#e8d9ad]/70">Investment</p>
-                  <p className="mt-2 font-display text-3xl gold-text sm:text-4xl">Be an Early Bird</p>
+                  <p className="mt-2 font-display text-3xl gold-text sm:text-4xl">
+                    Be an Early Bird
+                  </p>
                   <button
                     onClick={() => setFormOpen(true)}
                     className="mt-6 inline-block rounded-md bg-gradient-to-r from-[#f7e7b0] via-[#d4af37] to-[#b8860b] px-7 py-3 text-sm font-semibold text-[#1a1407] shadow-lg shadow-[#d4af37]/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#d4af37]/40"
@@ -958,7 +1006,9 @@ function Index() {
         </p>
         <div className="mt-10 flex justify-center">
           <button
-            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() =>
+              document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
+            }
             className="rounded-sm bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20"
           >
             Reserve Your Seat Today
@@ -969,8 +1019,7 @@ function Index() {
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
           <span className="flex items-center gap-2 font-display text-foreground">
-            <img src={ecLogoAsset.url} alt="Encoding Careers" className="h-8 w-auto rounded-md ring-1 ring-white/20" />
-            <span>Encoding Careers</span>
+            <img src={ecLogoAsset} alt="Encoding Careers" className="h-8 w-auto" />
           </span>
           <span>© 2026 · Investment Banking Immersion Weekend · Mumbai</span>
         </div>
