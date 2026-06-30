@@ -464,7 +464,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Financial modelling with Claude, M&A & PE deep-dives, and a live M&A case simulation. 11th and 12th\u00a0 June\u00a0, Mumbai.",
+          "Financial modelling with Claude, M&A & PE deep-dives, and a live M&A case simulation. 11th and 12th\u00a0 July\u00a0, Mumbai.",
       },
       { property: "og:image", content: skylineHero },
     ],
@@ -584,7 +584,7 @@ function Index() {
 
           <dl className="mt-10 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
             {[
-              ["Dates", "11th and 12th\u00a0 June\u00a0"],
+              ["Dates", "11th and 12th\u00a0 July\u00a0"],
               ["Timing", "4 PM – 8 PM"],
               ["Location", "Mumbai"],
               ["Seats", "Very Limited Seats\u00a0"],
@@ -973,7 +973,7 @@ function Index() {
                     Equity, a live deal simulation &amp; an exclusive networking dinner.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-xs uppercase tracking-widest text-[#e8d9ad]/70">
-                    <span>11th &amp; 12th June · Mumbai</span>
+                    <span>11th &amp; 12th July · Mumbai</span>
                     <span>Very Limited Seats</span>
                   </div>
                 </div>
